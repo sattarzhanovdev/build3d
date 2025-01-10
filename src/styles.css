@@ -41,6 +41,7 @@ body{
 }
 
 .house_more{
+  background: rgba(0, 0, 0, 0.5);
   margin-left: auto;
   margin-right: auto;
   max-width: 1350px;
@@ -59,6 +60,18 @@ body{
 
 .house_more .back1{
   display: none;
+}
+
+.house_more .sides{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.house_more .sides img{
+  width: 100px;
+  height: 100px;
+  border-radius: 6px;
 }
 
 .info h1{
