@@ -4,7 +4,7 @@ import "./styles.css";
 
 function App() {
   const [state, setState] = useState(-1);
-  const [lastState, setLastState] = useState(null); // Добавляем lastState для хранения предыдущего состояния
+  const [lastState, setLastState] = useState(null); 
 
   const videoCount = 2;
 
@@ -26,12 +26,17 @@ function App() {
     };
   }, [videoCount]);
 
-  // Обновляем lastState при каждом изменении state
   useEffect(() => {
     if (state !== -1) {
       setLastState(state); // сохраняем предыдущее состояние
     }
   }, [state]);
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      setState(-2)
+    }, 3000)
+  }, [])
 
   return (
     <div>
@@ -41,7 +46,7 @@ function App() {
         key={state}
         className="background-video"
       >
-        <source src={state === -1 ? "https://malinowskiego.com/videos/h265/desktop/Malinowskiego_Hero_0-1.mp4" : videos[state]} type="video/mp4" />
+        <source src={state === -1 ? "https://malinowskiego.com/videos/h265/desktop/Malinowskiego_Hero_0-1.mp4" : state === -2 ? "https://malinowskiego.com/videos/h265/desktop/Malinowskiego_Hero_1-1.mp4" : videos[state]} type="video/mp4" />
       </video>
 
       <div className="scroll-content">
