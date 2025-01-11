@@ -3,6 +3,13 @@ import videos from "./utils";
 import "./styles.css";
 import intro from './videos/Malinowskiego_Hero_0-1.mp4';
 import introMove from './videos/Malinowskiego_Hero_1-1.mp4';
+import move1 from './videos/Malinowskiego_HouseA_1-1 (1).mp4'
+import move2 from './videos/Malinowskiego_HouseA_2-2 (1).mp4'
+import move3 from './videos/Malinowskiego_HouseA_3-3.mp4'
+import move4 from './videos/Malinowskiego_HouseA_4-4.mp4'
+import move5 from './videos/Malinowskiego_HouseA_I1-I1 (1).mp4'
+import move6 from './videos/Malinowskiego_HouseA_I2-I2.mp4'
+
 
 function App() {
   const [state, setState] = useState(-1);
@@ -52,6 +59,45 @@ function App() {
     setIsVideoChanging(false); // Заканчиваем плавный переход
   };
 
+  React.useEffect(() => {
+    const timeout = setTimeout(() => {
+      setState((prevState) => {
+        if (prevState === 0) {
+          return -2;
+        } else if (prevState === 2 || prevState === 20) {
+          return -3;
+        } else if (prevState === 8 || prevState === 19) {
+          return -4;
+        } else if (prevState === 18 || prevState === 18) {
+          return -5;
+        } else if (prevState === 12 || prevState === 17) {
+          return -6;
+        } else if (prevState === 14 || prevState === 16) {
+          return -7;
+        }else if (prevState === 15) {
+          return -8;
+        }
+        return prevState;
+      });
+    }, 2500);
+  
+    return () => clearTimeout(timeout); // Чистим таймаут при размонтировании или изменении зависимости
+  }, [state]);
+
+  console.log(state);
+  
+  const videoSources = {
+    "-1": intro,
+    "-2": introMove,
+    "-3": move1,
+    "-4": move2,
+    "-5": move3,
+    "-6": move4,
+    "-7": move5,
+    "-8": move6,
+  };
+
+  
   return (
     <div>
       {
@@ -59,11 +105,13 @@ function App() {
           <video
             autoPlay
             muted
+            preload="auto"
+            loop={state <= -1 && state >= -6 ? true : false}
             key={state || i}
-            className={`background-video ${i === state || state === -1 || state === -2? 'active' : ''}`} 
+            className={`background-video ${i === state || state <= -1 && state >= -6 ? 'active' : ''}`} 
           >
             <source
-              src={state === -1 ? intro : state === -2 ? introMove : item}
+              src={videoSources[state] || item}
               type="video/mp4"
             />
           </video>
@@ -71,7 +119,7 @@ function App() {
       }
 
       <div className="scroll-content">
-        {Array.from({ length: state === 2 || state >= 6 ? 1 : 2 }, (_, index) => (
+        {Array.from({ length: state === 2 || state >= 6 || state <= -1 && state >= -9  ? 1 : 2 }, (_, index) => (
           <div key={index} className="scroll-section">
             {index === 0 ? (
               <div className="info">
@@ -124,7 +172,7 @@ function App() {
             ) : (
               <div
                 className="info"
-                style={state === 2 || state === 3 || state >= 6 ? { display: "none" } : state === 4 ? { display: "block" } : null}
+                style={state === 2 || state === 3 || state >= 6 || state <= -1 && state >= -9  ? { display: "none" } : state === 4 ? { display: "block" } : null}
               >
                 <h1>Select your house</h1>
                 <div className="houses">
@@ -153,7 +201,7 @@ function App() {
               </div>
             )}
 
-            {state === 2 || state >= 6 ? (
+            {state === 2 || state <= -1 && state >= -9 || state >= 6 ? (
               <div className="house_more">
                 <button onClick={() => handleButtonClick(4)} className={`back${index}`}>
                   <svg
@@ -197,7 +245,7 @@ function App() {
                   </div>
                 </div>
               </div>
-            ) : null}
+            ) : state === -1 || state === -2 ? null : null}
           </div>
         ))}
       </div>
